@@ -1,5 +1,7 @@
 # Техническое задание
 
+[<- Назад](/README.md)
+
 Используемые технологии: Vue3, Vue Router, Mobx/Vuex, TypeScript
 
 ## 1 часть

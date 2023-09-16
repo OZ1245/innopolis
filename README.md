@@ -1,6 +1,15 @@
-# innopolis
+# Flame Тестовое фронт
 
-## Project setup
+## Содержание:
+- [Тестовое задание](/doc/task.md)
+- Архитектура:
+  - [API](/doc/api.md)
+  - [Хранилище](/doc/store.md)
+  - [Представления](/doc/views.md)
+
+## Разворачивание проекта
+
+### Project setup
 ```
 npm install
 ```
@@ -19,6 +28,3 @@ npm run build
 ```
 npm run lint
 ```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).

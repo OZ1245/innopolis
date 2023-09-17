@@ -26,6 +26,7 @@
         <TheButton
           danger
           v-if="item.disabled"
+          @click="onRemoveFromFavorite(item.data)"
         >
           <XMarkIcon class="peoples-view__star" />
           Remove
@@ -154,7 +155,7 @@ const onFetchData = (p: number): void => {
 
       perView.value = result.value?.results?.length || 1
 
-      disableCheckboxes()
+      changePeopleState()
     })
 }
 
@@ -217,29 +218,43 @@ const onAddToFavorite = (character: IPeople = null): void => {
   
   $store.dispatch('addFavorite', characters)
   
-  disableCheckboxes()
+  changePeopleState()
 }
 
-const disableCheckboxes = (): void => {
-  favorite.value.map((fav: IPeople): void => {
-    bodyTableData.value = bodyTableData.value.reduce((result: IBodyTableData[], character: IBodyTableData): IBodyTableData[] => {
-      if (character.data.id === fav.id) {
-        return [
-          ...result,
-          {
-            data: character.data,
-            checked: true,
-            disabled: true
-          }
-        ]
-      }
+const onRemoveFromFavorite = (character: IPeople): void => {
+  $store.dispatch('removeFavorite', [ character.id ])
 
+  changePeopleState()
+}
+
+const changePeopleState = (): void => {
+  const favs = favorite.value.map((item: IPeople): number[] => {
+    console.log('item:', item)
+    console.log('item.id:', item.id)
+    return item.id
+  })
+  
+  bodyTableData.value = bodyTableData.value.reduce((result: IBodyTableData[], character: IBodyTableData): IBodyTableData[] => {
+    if (favs.includes(character.data.id)) {
       return [
         ...result,
-        character
+        {
+          data: character.data,
+          checked: false,
+          disabled: true
+        }
       ]
-    }, [])
-  })
+    }
+
+    return [
+      ...result,
+      {
+        data: character.data,
+        checked: character.checked,
+        disabled: false
+      }
+    ]
+  }, [])
 }
 
 onFetchData(1)

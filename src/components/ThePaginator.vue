@@ -55,66 +55,65 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, defineEmits, watch, onMounted, withDefaults, defineProps } from 'vue'
+import { ref, defineEmits, onMounted, withDefaults, defineProps } from 'vue'
 import { useStore } from 'vuex'
 import { ChevronDoubleLeftIcon, ChevronLeftIcon, ChevronDoubleRightIcon, ChevronRightIcon } from '@heroicons/vue/24/outline'
 
 const $store = useStore()
 
+const props = withDefaults(defineProps<{
+  modelValue?: number | null,
+  pages: number
+}>(), {
+  modelValue: 1,
+  pages: 1
+})
+
 const emits = defineEmits<{
   (e: 'change', page: number): void
+  (e: 'update:modelValue', page: number): void
 }>()
 
 let model = ref<number | null>(null)
-let pages = ref<number | null>(20) // FIXME: Получить число страниц
-
-const page = computed((): number => {
-  return $store
-    .state
-    .page || 1
-})
 
 onMounted(() => {
-  model.value = page.value
+  model.value = props.modelValue
 })
 
 const changePage = (): void => {
   $store.dispatch('setPage', model)
 
   emits('change', model.value)
+  emits('update:modelValue', model.value)
 }
 
 const firstPage = (): void => {
-  if (page.value > 1) {
+  if (props.modelValue > 1) {
     model.value = 1
     changePage()
   }
 }
 
 const prevPage = (): void => {
-  if (page.value > 1) {
+  if (props.modelValue > 1) {
     model.value--
     changePage()
   }
 }
 
 const nextPage = (): void => {
-  if (page.value < pages.value) {
+  if (props.modelValue < props.pages) {
     model.value++
     changePage()
   }
 }
 
 const lastPage = (): void => {
-  if (page.value < pages.value) {
-    model.value = pages.value
+  if (props.modelValue < props.pages) {
+    model.value = props.pages
     changePage()
   }
 }
-
-watch(page, (val: number): void => {
-  model.value = val
-})
 </script>
 
 <style lang="scss" scoped>

@@ -11,7 +11,10 @@
       class="peoples-view__table"
     ></DataTable>
 
-    <ThePaginator></ThePaginator>
+    <ThePaginator
+      v-model="page"
+      :pages="pages"
+    ></ThePaginator>
   </div>
 </template>
 
@@ -27,12 +30,29 @@ const $store = useStore()
 
 let loading = ref<boolean>(true)
 let peoplesAll = ref<IPeopleAll | null>(null)
+let page = ref<number>(1)
+let perView = ref<number>(1)
 
 $store
   .dispatch('fetchPeople')
   .then((result) => {
     loading.value = false
     peoplesAll.value = result
+
+    let _page: number
+    let url
+
+    if (peoplesAll.value?.next) {
+      url = new URL(peoplesAll.value?.next)
+      _page = +url.searchParams.get('page')
+      page.value = _page--
+    } else {
+      url = new URL(peoplesAll.value?.previous)
+      _page = +url.searchParams.get('page')
+      page.value = _page++
+    }
+
+    perView.value = peoplesAll.value?.results?.length || 1
   })
 
 const headerTableData = ref<Array<{
@@ -72,6 +92,10 @@ const bodyTableData = computed((): Array<{
     mass: character.mass,
     hair_color: character.hair_color
   })) || []
+})
+
+const pages = computed((): number => {
+  return Math.round(+peoplesAll.value?.count / perView.value) || 1
 })
 </script>
 

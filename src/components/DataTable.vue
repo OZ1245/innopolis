@@ -39,21 +39,7 @@
           v-for="(td, j) in tr"
           :key="`td-${j}`"
         >
-          <router-link 
-            v-if="props.routerLink"
-            :to="{ 
-              name: props.routerLink,
-              params: {
-                [props.routerParamsAlias]: td[props.routerParamsAlias]
-              }
-            }"
-          >
-            {{ td }}
-          </router-link>
-          
-          <template v-esle>
-            {{ td }}
-          </template>
+          {{ td }}
         </td>
 
         <td v-if="props.showButtonsColumn">
@@ -81,15 +67,11 @@ const props = withDefaults(defineProps<{
   }>,
   showCheckboxColumn: boolean,
   showButtonsColumn: boolean,
-  routerLink?: string | null,
-  routerParamsAlias?: any
 }>(), {
   header: () => [],
   body: () => [],
   showCheckboxColumn: false,
   showButtonsColumn: false,
-  routerLink: null,
-  routerParamsAlias: null
 })
 
 const emits = defineEmits<{
@@ -97,5 +79,5 @@ const emits = defineEmits<{
   (e: 'select-all-rows', data: IReturnData[]): void
 }>()
 
-const selectAll = ref(false)
+const selectAll = ref<boolean>(false)
 </script>

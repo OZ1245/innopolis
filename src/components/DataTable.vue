@@ -13,6 +13,7 @@
         <th
           v-for="(th, i) in props.header"
           :key="`th-${i}`"
+          v-show="!th.hidden"
         >
           {{ th.title }}
         </th>
@@ -38,6 +39,7 @@
         <td
           v-for="(td, j) in tr"
           :key="`td-${j}`"
+          v-show="!props.header.find((i) => i.alias === j && i.hidden)"
         >
           {{ td }}
         </td>
@@ -59,8 +61,9 @@ interface IReturnData {
 
 const props = withDefaults(defineProps<{
   header: Array<{
-    title: string,
-    alias: string
+    title?: string,
+    alias: string,
+    hidden?: boolean
   }>,
   body: Array<{
     [key: string]: any,

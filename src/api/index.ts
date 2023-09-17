@@ -1,22 +1,23 @@
 const url = "https://swapi.dev/api/people"
 
 export interface IPeople {
+  id?: number,
   name: string, 
   height: string, 
   mass: string, 
   hair_color: string, 
-  skin_color: string, 
-  eye_color: string, 
-  birth_year: string, 
-  gender: string, 
-  homeworld: string, 
-  films: string[], 
-  species: any[], // FIXME: Прочитать доку api 
-  vehicles: string[], 
-  starships: string[], 
-  created: string, // FIXME: Прочитать доку api 
-  edited: string, // FIXME: Прочитать доку api  
-  url: string
+  skin_color?: string, 
+  eye_color?: string, 
+  birth_year?: string, 
+  gender?: string, 
+  homeworld?: string, 
+  films?: string[], 
+  species?: any[], // FIXME: Прочитать доку api 
+  vehicles?: string[], 
+  starships?: string[], 
+  created?: string, // FIXME: Прочитать доку api 
+  edited?: string, // FIXME: Прочитать доку api  
+  url?: string
 }
 
 export interface IPeopleAll {
@@ -30,27 +31,38 @@ const fetchPeople = async (page: number | null): Promise<IPeopleAll> => {
   if (page) {
     return await fetch(url, {
       method: 'GET',
+      headers: {
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify({
         page
       })
     })
-    .then(async ({ json }) => {
-      return await json()
+    .then(async (response) => {
+      return await response.json()
     })
   }
 
-  return await fetch(url, { method: 'GET' })
-    .then(async ({ json }) => {
-      return await json()
-    })
+  return await fetch(url, { 
+    method: 'GET',
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+  .then(async (response) => {
+    return await response.json()
+  })
 } 
 
 const fetchPeopleById = async (id: number): Promise<IPeople> => {
   return await fetch(`${url}/${id}`, {
-    method: 'GET'
+    method: 'GET',
+    headers: {
+      "Content-Type": "application/json",
+    },
   })
-  .then(async ({ json }) => {
-    return await json()
+  .then(async (response) => {
+    return await response.json()
   })
 }
 
@@ -61,8 +73,8 @@ const searchPeople = async (search: string | null): Promise<IPeopleAll> => {
       search
     })
   })
-  .then(async ({ json }) => {
-    return await json()
+  .then(async (response) => {
+    return await response.json()
   })
 }
 

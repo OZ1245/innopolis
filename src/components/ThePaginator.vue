@@ -148,23 +148,26 @@ watch(page, (val: number): void => {
   justify-content: center;
   align-items: center;
   transition: background-color .3s, border-color .3s, color .3s;
-  color: var(--text-color);
-
-  &:not(:disabled) {
-    color: var(--text-color);
-    background-color: var(--primary);
-    border: 1px solid var(--primary);
+  color: var(--text-color-second);
+  background-color: var(--primary);
+  border: {
+    width: 2px;
+    style: solid;
+    color: var(--primary);
+    radius: var(--border-radius);
   }
+  padding-inline: calc(var(--padding-inline) / 2);
+  padding-block: calc(var(--padding-block) / 2);
 
   &:disabled {
-    color: var(--text-color);
+    color: var(--text-color-second);
     background-color: var(--disabled);
-    border: 1px solid var(--disabled);
+    border-color: var(--disabled);
   }
 
   &:hover:not(:disabled) {
-    color: var(--text-color);
-    background-color: var(--second);
+    color: var(--primary);
+    background-color: var(--black);
     border-color: var(--primary);
     cursor: pointer;
     transition: background-color .15s, border-color .15s, color .15s;
@@ -177,6 +180,6 @@ watch(page, (val: number): void => {
 }
 
 .paginator__active {
-  color: var(--text-color);
+  color: var(--text-color-second);
 }
 </style>

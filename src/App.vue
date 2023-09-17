@@ -9,10 +9,5 @@
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: var(--text-color);
-
-  background: {
-    image: url('/public/img/background.webm');
-    repeat: repeat;
-  };
 }
 </style>

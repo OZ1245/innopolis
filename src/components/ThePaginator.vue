@@ -180,6 +180,6 @@ watch(page, (val: number): void => {
 }
 
 .paginator__active {
-  color: var(--text-color-second);
+  color: var(--text-color);
 }
 </style>

@@ -69,3 +69,20 @@ const bodyTableData = computed((): Array<{
   })) || []
 })
 </script>
+
+<style lang="scss">
+.peoples-view {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(var(--padding-block) * 2);
+
+  padding-inline: var(--padding-inline);
+  padding-block: var(--padding-block);
+}
+
+.peoples-view__table {
+  width: 100%;
+  max-width: 800px;
+}
+</style>

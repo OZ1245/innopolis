@@ -6,7 +6,7 @@
 
 Возвращает список всех персонажей, разбитый на страницы.
 
-**Метод:** fetchPeople
+**Метод:** getPeople
 
 **GET:** https://swapi.dev/api/people
 
@@ -58,7 +58,7 @@
 
 Возвращает одного персонажа по id.
 
-**Метод:** fetchPeopleById
+**Метод:** getPeopleById
 
 **GET:** https://swapi.dev/api/people
 

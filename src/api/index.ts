@@ -26,7 +26,7 @@ export interface IPeopleAll {
   results: IPeople[],
 }
 
-export const fetchPeople = async (page: number | null): Promise<IPeopleAll> => {
+const fetchPeople = async (page: number | null): Promise<IPeopleAll> => {
   if (page) {
     return await fetch(url, {
       method: 'GET',
@@ -45,7 +45,7 @@ export const fetchPeople = async (page: number | null): Promise<IPeopleAll> => {
     })
 } 
 
-export const fetchPeopleById = async (id: number): Promise<IPeople> => {
+const fetchPeopleById = async (id: number): Promise<IPeople> => {
   return await fetch(`${url}/${id}`, {
     method: 'GET'
   })
@@ -54,7 +54,7 @@ export const fetchPeopleById = async (id: number): Promise<IPeople> => {
   })
 }
 
-export const searchPeople = async (search: string | null): Promise<IPeopleAll> => {
+const searchPeople = async (search: string | null): Promise<IPeopleAll> => {
   return await fetch(url, {
     method: 'GET',
     body: JSON.stringify({
@@ -64,4 +64,10 @@ export const searchPeople = async (search: string | null): Promise<IPeopleAll> =
   .then(async ({ json }) => {
     return await json()
   })
+}
+
+export default {
+  fetchPeople,
+  fetchPeopleById,
+  searchPeople
 }

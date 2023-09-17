@@ -1,76 +1,85 @@
 <template>
-  <table class="data-table">
-    <thead v-if="props.header.length">
-      <tr>
-        <th 
-          v-if="props.showCheckboxColumn"
-          class="data-table__th"
-        >
-          <input 
-            type="checkbox" 
-            v-model="selectAll"
-            @change="emits('select-all-rows', props.body)"
+  <div class="data-table">
+    <table class="data-table__table">
+      <thead v-if="props.header.length">
+        <tr>
+          <th 
+            v-if="props.showCheckboxColumn"
+            class="data-table__th"
           >
-        </th>
+            <input 
+              type="checkbox" 
+              v-model="selectAll"
+              @change="emits('select-all-rows', props.body)"
+            >
+          </th>
 
-        <th
-          v-for="(th, i) in props.header"
-          :key="`th-${i}`"
-          v-show="!th.hidden"
-          class="data-table__th"
-        >
-          {{ th.title }}
-        </th>
-
-        <th 
-          v-if="props.showButtonsColumn"
-          class="data-table__th"
-        ></th>
-      </tr>
-    </thead>
-
-    <tbody v-if="props.body.length">
-      <tr 
-        v-for="(tr, i) in props.body"
-        :key="`tr-${i}`"
-      >
-        <td 
-          v-if="props.showCheckboxColumn"
-          class="data-table__td"
-        >
-          <input 
-            v-model="tr.checked"
-            type="checkbox" 
-            :disabled="tr.checkboxDisabled"
-            @change="emits('select-row', tr)"
+          <th
+            v-for="(th, i) in props.header"
+            :key="`th-${i}`"
+            v-show="!th.hidden"
+            class="data-table__th"
           >
-        </td>
+            {{ th.title }}
+          </th>
 
-        <td
-          v-for="(td, j) in tr"
-          :key="`td-${j}`"
-          v-show="!props.header.find((i) => i.alias === j && i.hidden)"
-          class="data-table__td"
-        >
-          {{ td }}
-        </td>
+          <th 
+            v-if="props.showButtonsColumn"
+            class="data-table__th"
+          ></th>
+        </tr>
+      </thead>
 
-        <td 
-          v-if="props.showButtonsColumn"
-          class="data-table__td"
+      <tbody v-if="props.body.length">
+        <tr 
+          v-for="(tr, i) in props.body"
+          :key="`tr-${i}`"
         >
-          <slot name="buttons" item="tr" index="i"></slot>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+          <td 
+            v-if="props.showCheckboxColumn"
+            class="data-table__td"
+          >
+            <input 
+              v-model="tr.checked"
+              type="checkbox" 
+              :disabled="tr.checkboxDisabled"
+              @change="onSelectRow($event, tr)"
+            >
+          </td>
+
+          <td
+            v-for="(td, j) in tr.data"
+            :key="`td-${j}`"
+            v-show="!props.header.find((i) => i.alias === j.toString() && i.hidden)"
+            class="data-table__td"
+          >
+            {{ td }}
+          </td>
+
+          <td 
+            v-if="props.showButtonsColumn"
+            class="data-table__td"
+          >
+            <slot name="buttons" item="tr" index="i"></slot>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div 
+      v-show="props.showFooter" 
+      class="data-table__footer"
+    >
+      <slot name="footer"></slot>
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
 import { withDefaults, defineProps, defineEmits, ref } from 'vue'
 
 interface IReturnData {
-  [key: string]: any
+  [key: string]: any,
 }
 
 const props = withDefaults(defineProps<{
@@ -84,23 +93,35 @@ const props = withDefaults(defineProps<{
   }>,
   showCheckboxColumn: boolean,
   showButtonsColumn: boolean,
+  showFooter: boolean,
 }>(), {
   header: () => [],
   body: () => [],
   showCheckboxColumn: false,
   showButtonsColumn: false,
+  showFooter: false
 })
 
 const emits = defineEmits<{
-  (e: 'select-row', data: IReturnData): void
+  (e: 'select-row', data: { data: IReturnData, checked: boolean }): void
   (e: 'select-all-rows', data: IReturnData[]): void
 }>()
 
 const selectAll = ref<boolean>(false)
+
+const onSelectRow = (e: any, data: IReturnData): void => {
+  emits('select-row', { data: data, checked: e.target.checked })
+}
 </script>
 
 <style lang="scss">
 .data-table {
+  display: flex;
+  flex-direction: column;
+  gap: var(--padding-block);
+}
+.data-table__table {
+  width: 100%;
   border-collapse: collapse;
   border-spacing: 0;
 }
@@ -133,5 +154,9 @@ const selectAll = ref<boolean>(false)
   &:first-child {
     border-left: 1px solid var(--border-color);
   }
+}
+
+.data-table__footer {
+
 }
 </style>

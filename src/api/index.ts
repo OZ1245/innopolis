@@ -17,7 +17,7 @@ export interface IPeople {
   starships?: string[], 
   created?: string, // FIXME: Прочитать доку api 
   edited?: string, // FIXME: Прочитать доку api  
-  url?: string
+  url?: string,
 }
 
 export interface IPeopleAll {

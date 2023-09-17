@@ -50,6 +50,10 @@
           >
             {{ td }}
           </router-link>
+          
+          <template v-esle>
+            {{ td }}
+          </template>
         </td>
 
         <td v-if="props.showButtonsColumn">

@@ -27,23 +27,8 @@ export interface IPeopleAll {
   results: IPeople[],
 }
 
-const fetchPeople = async (page: number | null): Promise<IPeopleAll> => {
-  if (page) {
-    return await fetch(url, {
-      method: 'GET',
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        page
-      })
-    })
-    .then(async (response) => {
-      return await response.json()
-    })
-  }
-
-  return await fetch(url, { 
+const fetchPeople = async (page: number): Promise<IPeopleAll> => {
+  return await fetch(`${url}?${new URLSearchParams({ page: page.toString() })}`, {
     method: 'GET',
     headers: {
       "Content-Type": "application/json",

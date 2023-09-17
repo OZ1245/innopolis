@@ -14,6 +14,7 @@
     <ThePaginator
       v-model="page"
       :pages="pages"
+      @change="onChangePage"
     ></ThePaginator>
   </div>
 </template>
@@ -32,28 +33,6 @@ let loading = ref<boolean>(true)
 let peoplesAll = ref<IPeopleAll | null>(null)
 let page = ref<number>(1)
 let perView = ref<number>(1)
-
-$store
-  .dispatch('fetchPeople')
-  .then((result) => {
-    loading.value = false
-    peoplesAll.value = result
-
-    let _page: number
-    let url
-
-    if (peoplesAll.value?.next) {
-      url = new URL(peoplesAll.value?.next)
-      _page = +url.searchParams.get('page')
-      page.value = _page--
-    } else {
-      url = new URL(peoplesAll.value?.previous)
-      _page = +url.searchParams.get('page')
-      page.value = _page++
-    }
-
-    perView.value = peoplesAll.value?.results?.length || 1
-  })
 
 const headerTableData = ref<Array<{
   title?: string,
@@ -95,8 +74,39 @@ const bodyTableData = computed((): Array<{
 })
 
 const pages = computed((): number => {
-  return Math.round(+peoplesAll.value?.count / perView.value) || 1
+  return Math.ceil(+peoplesAll.value?.count / perView.value) || 1
 })
+
+const onFetchData = (p: number): void => {
+  loading.value = true
+  $store
+    .dispatch('fetchPeople', p)
+    .then((result) => {
+      loading.value = false
+      peoplesAll.value = result
+
+      let _page: number
+      let url
+
+      if (peoplesAll.value?.next) {
+        url = new URL(peoplesAll.value?.next)
+        _page = +url.searchParams.get('page')
+        page.value = _page--
+      } else {
+        url = new URL(peoplesAll.value?.previous)
+        _page = +url.searchParams.get('page')
+        page.value = _page++
+      }
+
+      perView.value = peoplesAll.value?.results?.length || 1
+    })
+}
+
+const onChangePage = (page: number): void => {
+  onFetchData(page)
+}
+
+onFetchData(1)
 </script>
 
 <style lang="scss">

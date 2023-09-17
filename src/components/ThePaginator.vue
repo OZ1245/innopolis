@@ -42,7 +42,7 @@
 
       <li class="paginator__item">
         <button
-          title="Last page"
+          :title="`Last page (${pages})`"
           class="paginator__button paginator__button--last"
           :disabled="model === pages"
           @click="lastPage"
@@ -78,10 +78,12 @@ let model = ref<number | null>(null)
 
 onMounted(() => {
   model.value = props.modelValue
+
+  $store.dispatch('setPage', model.value)
 })
 
 const changePage = (): void => {
-  $store.dispatch('setPage', model)
+  $store.dispatch('setPage', model.value)
 
   emits('change', model.value)
   emits('update:modelValue', model.value)

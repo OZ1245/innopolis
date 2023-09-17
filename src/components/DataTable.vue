@@ -39,7 +39,17 @@
           v-for="(td, j) in tr"
           :key="`td-${j}`"
         >
-          {{ td }}
+          <router-link 
+            v-if="props.routerLink"
+            :to="{ 
+              name: props.routerLink,
+              params: {
+                [props.routerParamsAlias]: td[props.routerParamsAlias]
+              }
+            }"
+          >
+            {{ td }}
+          </router-link>
         </td>
 
         <td v-if="props.showButtonsColumn">
@@ -66,12 +76,16 @@ const props = withDefaults(defineProps<{
     [key: string]: any,
   }>,
   showCheckboxColumn: boolean,
-  showButtonsColumn: boolean
+  showButtonsColumn: boolean,
+  routerLink?: string | null,
+  routerParamsAlias?: any
 }>(), {
   header: () => [],
   body: () => [],
   showCheckboxColumn: false,
-  showButtonsColumn: false
+  showButtonsColumn: false,
+  routerLink: null,
+  routerParamsAlias: null
 })
 
 const emits = defineEmits<{

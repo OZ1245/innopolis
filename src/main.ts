@@ -3,6 +3,13 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 
-import '/src/scss/index.scss'
+import vLoadingPlugin from '@/plugins/vLoadingPlugin'
 
-createApp(App).use(store).use(router).mount('#app')
+import '@/scss/index.scss'
+import '@/scss/plugins/vLoadingPlugin.scss'
+
+createApp(App)
+  .use(store)
+  .use(router)
+  .use(vLoadingPlugin)
+  .mount('#app')

@@ -1,5 +1,8 @@
 <template>
-  <div class="peoples-view">
+  <div
+    v-loading="loading" 
+    class="peoples-view"
+  >
     <DataTable 
       :header="headerTableData"
       :body="bodyTableData"
@@ -22,11 +25,13 @@ import { useStore } from 'vuex'
 
 const $store = useStore()
 
+let loading = ref<boolean>(true)
 let peoplesAll = ref<IPeopleAll | null>(null)
 
 $store
   .dispatch('fetchPeople')
   .then((result) => {
+    loading.value = false
     peoplesAll.value = result
   })
 

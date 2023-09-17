@@ -14,7 +14,10 @@
       @select-row="onSelectCharacter"
     >
       <template #footer>
-        <button type="button">Button</button>
+        <TheButton>
+          <StarIcon class="peoples-view__star"/>
+          Add to Favorite
+        </TheButton>
       </template>
     </DataTable>
 
@@ -29,10 +32,12 @@
 <script setup lang="ts">
 import DataTable from '@/components/DataTable.vue'
 import ThePaginator from '@/components/ThePaginator.vue'
+import TheButton from '@/components/TheButton.vue'
 // import InputSearch from '@/components/InputSearch.vue'
 import { IPeople, IPeopleAll } from '@/api'
 import { ref, computed, shallowRef } from 'vue'
 import { useStore } from 'vuex'
+import { StarIcon } from '@heroicons/vue/24/outline'
 
 interface IBodyTableData {
   data: {
@@ -178,5 +183,10 @@ onFetchData(1)
 .peoples-view__table {
   width: 100%;
   max-width: 800px;
+}
+
+.peoples-view__star {
+  width: var(--icon-size-m);
+  height: var(--icon-size-m);
 }
 </style>

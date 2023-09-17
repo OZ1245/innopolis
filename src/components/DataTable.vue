@@ -157,6 +157,7 @@ const onSelectRow = (e: any, data: IReturnData): void => {
 }
 
 .data-table__footer {
-
+  display: flex;
+  justify-content: center;
 }
 </style>

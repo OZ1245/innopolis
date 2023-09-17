@@ -10,7 +10,7 @@
             <input 
               type="checkbox" 
               v-model="selectAll"
-              @change="emits('select-all-rows', props.body)"
+              @change="onSelectAllRows"
             >
           </th>
 
@@ -42,7 +42,7 @@
             <input 
               v-model="tr.checked"
               type="checkbox" 
-              :disabled="tr.checkboxDisabled"
+              :disabled="tr.disabled"
               @change="onSelectRow($event, tr)"
             >
           </td>
@@ -104,10 +104,14 @@ const props = withDefaults(defineProps<{
 
 const emits = defineEmits<{
   (e: 'select-row', data: { data: IReturnData, checked: boolean }): void
-  (e: 'select-all-rows', data: IReturnData[]): void
+  (e: 'select-all-rows', data: {data: IReturnData[], checked: boolean }): void
 }>()
 
 const selectAll = ref<boolean>(false)
+
+const onSelectAllRows = (): void => {
+  emits('select-all-rows', { data: props.body, checked: selectAll.value })
+}
 
 const onSelectRow = (e: any, data: IReturnData): void => {
   emits('select-row', { data: data, checked: e.target.checked })

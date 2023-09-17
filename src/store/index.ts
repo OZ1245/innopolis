@@ -11,10 +11,10 @@ export default createStore({
   },
   mutations: {
     SET_FAVORITE_CHARACTER: (state, data: IPeople) => {
-      state.favorite = [
+      state.favorite = Array.from(new Set([
         ...state.favorite,
         data
-      ]
+      ]))
     },
     REMOVE_FAVORITE_CHARACTER: (state, id: number) => {
       state.favorite = deleteFromArray(state.favorite, id, 'id')

@@ -14,7 +14,7 @@
       @select-row="onSelectCharacter"
     >
       <template #footer>
-        <TheButton>
+        <TheButton @click="onAddToFavorite">
           <StarIcon class="peoples-view__star"/>
           Add to Favorite
         </TheButton>
@@ -40,13 +40,7 @@ import { useStore } from 'vuex'
 import { StarIcon } from '@heroicons/vue/24/outline'
 
 interface IBodyTableData {
-  data: {
-    id: number,
-    name: string,
-    height: string,
-    mass: string,
-    hair_color: string,
-  },
+  data: IPeople,
   checked: boolean,
   disabled?: boolean
 }
@@ -92,6 +86,10 @@ const pages = computed((): number => {
   return Math.ceil(+peoplesAll.value?.count / perView.value) || 1
 })
 
+const favorite = computed((): IPeople[] => {
+  return $store.state.favorite || []
+})
+
 const onFetchData = (p: number): void => {
   loading.value = true
   $store
@@ -133,12 +131,14 @@ const onFetchData = (p: number): void => {
       }
 
       perView.value = result.value?.results?.length || 1
+
+      disableCheckboxes()
     })
 }
 
 const showFooter = computed((): boolean => {
   return bodyTableData.value?.some((character: IBodyTableData): boolean => {
-    return character.checked
+    return character.checked && !character.disabled
   }) || false
 })
 
@@ -146,11 +146,20 @@ const onChangePage = (page: number): void => {
   onFetchData(page)
 }
 
-const onSelectAllPeoples = (characters: IBodyTableData[]): void => {
-  bodyTableData.value = characters.map((character: IBodyTableData): IBodyTableData => ({
-    ...character,
-    checked: true
-  }))
+const onSelectAllPeoples = (eventData: { data: IBodyTableData[], checked: boolean }): void => {
+  const { data, checked } = eventData
+
+  if (checked) {
+    bodyTableData.value = data.map((character: IBodyTableData): IBodyTableData => ({
+      ...character,
+      checked: true
+    }))
+  } else {
+    bodyTableData.value = data.map((character: IBodyTableData): IBodyTableData => ({
+      ...character,
+      checked: (!character.disabled) ? false : character.checked
+    }))
+  }
 }
 
 const onSelectCharacter = (character: IBodyTableData): void => {
@@ -164,6 +173,46 @@ const onSelectCharacter = (character: IBodyTableData): void => {
 
     return result
   }, [])
+}
+
+const onAddToFavorite = (): void => {
+  let characters: IPeople[] = []
+
+  bodyTableData.value.map((character: IBodyTableData): void => {
+    if (character.checked) {
+      characters = [
+        ...characters,
+        character.data
+      ]
+    }
+  })
+
+  $store
+    .dispatch('addFavorite', characters)
+
+    disableCheckboxes()
+}
+
+const disableCheckboxes = (): void => {
+  favorite.value.map((fav: IPeople): void => {
+    bodyTableData.value = bodyTableData.value.reduce((result: IBodyTableData[], character: IBodyTableData): IBodyTableData[] => {
+      if (character.data.id === fav.id) {
+        return [
+          ...result,
+          {
+            data: character.data,
+            checked: true,
+            disabled: true
+          }
+        ]
+      }
+
+      return [
+        ...result,
+        character
+      ]
+    }, [])
+  })
 }
 
 onFetchData(1)

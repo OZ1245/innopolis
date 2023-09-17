@@ -2,7 +2,10 @@
   <table class="data-table">
     <thead v-if="props.header.length">
       <tr>
-        <th v-if="props.showCheckboxColumn">
+        <th 
+          v-if="props.showCheckboxColumn"
+          class="data-table__th"
+        >
           <input 
             type="checkbox" 
             v-model="selectAll"
@@ -14,11 +17,15 @@
           v-for="(th, i) in props.header"
           :key="`th-${i}`"
           v-show="!th.hidden"
+          class="data-table__th"
         >
           {{ th.title }}
         </th>
 
-        <th v-if="props.showButtonsColumn"></th>
+        <th 
+          v-if="props.showButtonsColumn"
+          class="data-table__th"
+        ></th>
       </tr>
     </thead>
 
@@ -27,7 +34,10 @@
         v-for="(tr, i) in props.body"
         :key="`tr-${i}`"
       >
-        <td v-if="props.showCheckboxColumn">
+        <td 
+          v-if="props.showCheckboxColumn"
+          class="data-table__td"
+        >
           <input 
             v-model="tr.checked"
             type="checkbox" 
@@ -40,11 +50,15 @@
           v-for="(td, j) in tr"
           :key="`td-${j}`"
           v-show="!props.header.find((i) => i.alias === j && i.hidden)"
+          class="data-table__td"
         >
           {{ td }}
         </td>
 
-        <td v-if="props.showButtonsColumn">
+        <td 
+          v-if="props.showButtonsColumn"
+          class="data-table__td"
+        >
           <slot name="buttons" item="tr" index="i"></slot>
         </td>
       </tr>
@@ -84,3 +98,40 @@ const emits = defineEmits<{
 
 const selectAll = ref<boolean>(false)
 </script>
+
+<style lang="scss">
+.data-table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+.data-table__th {
+  background-color: var(--primary);
+  color: var(--text-color-second);
+
+  padding-inline: calc(var(--padding-inline) / 2);
+  padding-block: calc(var(--padding-block) / 2);
+
+  &:not(:last-child) {
+    border-right: 1px solid var(--black);
+  }
+  
+  &:first-child {
+    border-left: 1px solid var(--primary);
+  }
+}
+
+.data-table__td {
+  color: var(--text-color);
+
+  padding-inline: calc(var(--padding-inline) / 2);
+  padding-block: calc(var(--padding-block) / 2);
+  
+  border-bottom: 1px solid var(--border-color);
+  border-right: 1px solid var(--border-color);
+
+  &:first-child {
+    border-left: 1px solid var(--border-color);
+  }
+}
+</style>

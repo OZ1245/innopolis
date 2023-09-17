@@ -16,7 +16,7 @@ export default createStore({
       ]
     },
     REMOVE_FAVORITE_CHARACTER: (state, id) => {
-      deleteFromArray(state.favorite, id, 'id')
+      state.favorite = deleteFromArray(state.favorite, id, 'id')
     }
   },
   actions: {
@@ -56,16 +56,30 @@ export default createStore({
         })
     },
 
-    addFavorite({ commit }, characters: IPeople[]) {
+    addFavorite({ commit, state }, characters: IPeople[]) {
       characters.map((character: IPeople): void => {
         commit('SET_FAVORITE_CHARACTER', character)
       })
+
+      localStorage.removeItem('swCharacters')
+
+      localStorage.setItem(
+        'swCharacters',
+        JSON.stringify(state.favorite)
+      )
     },
 
-    removeFavorite({ commit }, ids: number[]) {
+    removeFavorite({ commit, state }, ids: number[]) {
       ids.map((id: number): void => {
         commit('REMOVE_FAVORITE_CHARACTER', id)
       })
+
+      localStorage.removeItem('swCharacters')
+
+      localStorage.setItem(
+        'swCharacters',
+        JSON.stringify(state.favorite)
+      )
     }
   },
   modules: {

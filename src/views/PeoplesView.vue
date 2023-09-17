@@ -5,12 +5,16 @@
       :body="bodyTableData"
       :show-checkbox-column="true"
       :show-buttons-column="true"
+      class="peoples-view__table"
     ></DataTable>
+
+    <ThePaginator></ThePaginator>
   </div>
 </template>
 
 <script setup lang="ts">
 import DataTable from '@/components/DataTable.vue'
+import ThePaginator from '@/components/ThePaginator.vue'
 // import InputSearch from '@/components/InputSearch.vue'
 import { IPeople, IPeopleAll } from '@/api'
 import { ref, computed } from 'vue'

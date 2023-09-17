@@ -1,0 +1,31 @@
+:root {
+  // Colors
+  --yellow: #F4D822;
+  --turquoise: #3AB8A8;
+  --blue: #1F154F;
+  --red: #C60F2A;
+  --beige: #E9D3AC;
+  --black: #080808;
+  --gray: #E2E2E2;
+
+  --primary: var(--yellow);
+  --second: var(--beige);
+  --border-color: var(--beige);
+  --background: var(--black);
+  --text-color: var(--back);
+  --text-color-second: var(--beige);
+  --disabled: var(--gray);
+
+  // Block
+  --border-radius: 6px;
+  --padding-inline: 16px;
+  --padding-block: 12px;
+  --icon-size-b: 24px;
+  --icon-size-m: 16px;
+
+  // Font styles
+  --font-size-b: 20px;
+  --font-size-m: 18px;
+  --font-size-s: 16px;
+  --font-size-xs: 14px;
+}

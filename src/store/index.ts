@@ -4,19 +4,23 @@ import { deleteFromArray } from '@/utils'
 
 export default createStore({
   state: {
-    favorite: <IPeople[]> []
+    favorite: <IPeople[]> [],
+    page: <number> 1,
   },
   getters: {
   },
   mutations: {
-    SET_FAVORITE_CHARACTER: (state, data) => {
+    SET_FAVORITE_CHARACTER: (state, data: IPeople) => {
       state.favorite = [
         ...state.favorite,
         data
       ]
     },
-    REMOVE_FAVORITE_CHARACTER: (state, id) => {
+    REMOVE_FAVORITE_CHARACTER: (state, id: number) => {
       state.favorite = deleteFromArray(state.favorite, id, 'id')
+    },
+    SET_PAGE: (state, page: number) => {
+      state.page = page
     }
   },
   actions: {
@@ -80,6 +84,10 @@ export default createStore({
         'swCharacters',
         JSON.stringify(state.favorite)
       )
+    },
+
+    setPage({ commit }, page: number) {
+      commit('SET_PAGE', page)
     }
   },
   modules: {

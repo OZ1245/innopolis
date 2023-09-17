@@ -1,4 +1,4 @@
-const deleteFromArray = (array: any[], value: string, prop: string) => {
+const deleteFromArray = (array: any[], value: string | number, prop: string) => {
   const cloneArray = [ ...array ]
   
   cloneArray.forEach((element, i) => {

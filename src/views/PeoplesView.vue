@@ -13,8 +13,30 @@
       @select-all-rows="onSelectAllPeoples"
       @select-row="onSelectCharacter"
     >
+      <template #buttons="{ item }">
+        <TheButton
+          primary
+          v-if="!item.disabled"
+          @click="onAddToFavorite(item.data)"
+        >
+          <PlusIcon class="peoples-view__star" />
+          Add
+        </TheButton>
+
+        <TheButton
+          danger
+          v-if="item.disabled"
+        >
+          <XMarkIcon class="peoples-view__star" />
+          Remove
+        </TheButton>
+      </template>
+
       <template #footer>
-        <TheButton @click="onAddToFavorite">
+        <TheButton
+          primary 
+          @click="onAddToFavorite"
+        >
           <StarIcon class="peoples-view__star"/>
           Add to Favorite
         </TheButton>
@@ -37,7 +59,7 @@ import TheButton from '@/components/TheButton.vue'
 import { IPeople, IPeopleAll } from '@/api'
 import { ref, computed, shallowRef } from 'vue'
 import { useStore } from 'vuex'
-import { StarIcon } from '@heroicons/vue/24/outline'
+import { StarIcon, XMarkIcon, PlusIcon } from '@heroicons/vue/24/outline'
 
 interface IBodyTableData {
   data: IPeople,
@@ -175,22 +197,27 @@ const onSelectCharacter = (character: IBodyTableData): void => {
   }, [])
 }
 
-const onAddToFavorite = (): void => {
+const onAddToFavorite = (character: IPeople = null): void => {
   let characters: IPeople[] = []
 
-  bodyTableData.value.map((character: IBodyTableData): void => {
-    if (character.checked) {
-      characters = [
-        ...characters,
-        character.data
-      ]
-    }
-  })
-
-  $store
-    .dispatch('addFavorite', characters)
-
-    disableCheckboxes()
+  if (character) {
+    characters = [
+      character
+    ]
+  } else {
+    bodyTableData.value.map((character: IBodyTableData): void => {
+      if (character.checked) {
+        characters = [
+          ...characters,
+          character.data
+        ]
+      }
+    })
+  }
+  
+  $store.dispatch('addFavorite', characters)
+  
+  disableCheckboxes()
 }
 
 const disableCheckboxes = (): void => {

@@ -58,9 +58,9 @@
 
           <td 
             v-if="props.showButtonsColumn"
-            class="data-table__td"
+            class="data-table__td data-table__td--buttons"
           >
-            <slot name="buttons" item="tr" index="i"></slot>
+            <slot name="buttons" :item="tr" :index="i"></slot>
           </td>
         </tr>
       </tbody>
@@ -158,6 +158,10 @@ const onSelectRow = (e: any, data: IReturnData): void => {
   &:first-child {
     border-left: 1px solid var(--border-color);
   }
+}
+.data-table__td--buttons {
+  display: grid;
+  justify-content: center;
 }
 
 .data-table__footer {

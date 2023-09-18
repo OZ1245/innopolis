@@ -3,6 +3,11 @@
     v-loading="loading"
     class="character-view"
   >
+    <nav>
+      <router-link :to="{ name: 'Home' }">Home</router-link> |
+      <router-link :to="{ name: 'Peoples' }">Peoples</router-link>
+    </nav>
+
     <DataTable 
       :header="headerTableData"
       :body="bodyTableData"
@@ -70,11 +75,33 @@ const headerTableData = ref<IHeaderTableData[]>([
 ])
 const bodyTableData = ref<IBodyTableData[]>([])
 
+const changePeopleState = (): void => {
+  const favoriteIds = $store.state.favorite.map((item: IPeople): number => {
+    return item.id
+  })
+
+  bodyTableData.value[0] = (favoriteIds.includes(bodyTableData.value[0].data.id))
+    ? {
+      data: bodyTableData.value[0].data,
+      checked: false,
+      disabled: true
+    }
+    : {
+      data: bodyTableData.value[0].data,
+      checked: bodyTableData.value[0].checked,
+      disabled: false
+    }
+}
+
 const onAddToFavorite = (character: IPeople) => {
-  // TODO
+  $store.dispatch('addFavorite', [character])
+
+  changePeopleState()
 }
 const onRemoveFromFavorite = (character: IPeople) => {
-  // TODO
+  $store.dispatch('removeFavorite', [ character.id ])
+
+  changePeopleState()
 }
 
 $store
@@ -88,7 +115,7 @@ $store
     bodyTableData.value = [
       {
         data: {
-          id: splitUrl.id,
+          id: +splitUrl[splitUrl.length - 2],
           name: result.name,
           height: result.height,
           mass: result.mass,
@@ -96,6 +123,8 @@ $store
         },
       }
     ]
+
+    changePeopleState()
   })
 </script>
 

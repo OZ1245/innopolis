@@ -22,3 +22,15 @@ body {
   text-align: center;
   color: var(--text-color);
 }
+
+nav {
+  padding: 30px;
+}
+
+a {
+  color: var(--yellow);
+
+  &:hover {
+    color: var(--red)
+  } 
+}

@@ -3,6 +3,11 @@
     v-loading="loading" 
     class="people-view"
   >
+    <nav>
+      <router-link :to="{ name: 'Home' }">Home</router-link> |
+      <router-link :to="{ name: 'Favorite' }">Favorite</router-link>
+    </nav>
+
     <InputSearch
       v-model="searchString"
       :result="searchResults"
@@ -235,12 +240,12 @@ const onRemoveFromFavorite = (character: IPeople): void => {
 }
 
 const changePeopleState = (): void => {
-  const favs = favorite.value.map((item: IPeople): number[] => {
+  const favoriteIds = $store.state.favorite.map((item: IPeople): number => {
     return item.id
   })
   
   bodyTableData.value = bodyTableData.value.reduce((result: IBodyTableData[], character: IBodyTableData): IBodyTableData[] => {
-    if (favs.includes(character.data.id)) {
+    if (favoriteIds.includes(character.data.id)) {
       return [
         ...result,
         {

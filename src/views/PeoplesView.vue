@@ -113,6 +113,12 @@ const favorite = computed((): IPeople[] => {
   return $store.state.favorite || []
 })
 
+const showFooter = computed((): boolean => {
+  return bodyTableData.value?.some((character: IBodyTableData): boolean => {
+    return character.checked && !character.disabled
+  }) || false
+})
+
 const onFetchData = (p: number): void => {
   loading.value = true
   $store
@@ -158,12 +164,6 @@ const onFetchData = (p: number): void => {
       changePeopleState()
     })
 }
-
-const showFooter = computed((): boolean => {
-  return bodyTableData.value?.some((character: IBodyTableData): boolean => {
-    return character.checked && !character.disabled
-  }) || false
-})
 
 const onChangePage = (page: number): void => {
   onFetchData(page)

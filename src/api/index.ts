@@ -52,11 +52,11 @@ const fetchPeopleById = async (id: number): Promise<IPeople> => {
 }
 
 const searchPeople = async (search: string | null): Promise<IPeopleAll> => {
-  return await fetch(url, {
+  return await fetch(`${url}?${new URLSearchParams({ search: search.toString() })}`, {
     method: 'GET',
-    body: JSON.stringify({
-      search
-    })
+    headers: {
+      "Content-Type": "application/json",
+    },
   })
   .then(async (response) => {
     return await response.json()

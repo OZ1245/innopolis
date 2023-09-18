@@ -76,18 +76,27 @@
 </template>
 
 <script setup lang="ts">
+import { IPeople } from '@/api'
 import { withDefaults, defineProps, defineEmits, ref } from 'vue'
+
+export interface IHeaderTableData {
+  title?: string,
+  alias: string,
+  hidden?: boolean
+}
+
+export interface IBodyTableData {
+  data: IPeople,
+  checked: boolean,
+  disabled?: boolean
+}
 
 interface IReturnData {
   [key: string]: any,
 }
 
 const props = withDefaults(defineProps<{
-  header: Array<{
-    title?: string,
-    alias: string,
-    hidden?: boolean
-  }>,
+  header: IHeaderTableData[],
   body: Array<{
     [key: string]: any,
   }>,

@@ -3,6 +3,13 @@
     v-loading="loading" 
     class="peoples-view"
   >
+    <InputSearch
+      v-model="searchString"
+      :result="searchResults"
+      :loading="searchLoading"
+      @search="onSearch"
+    ></InputSearch>
+
     <DataTable 
       :header="headerTableData"
       :body="bodyTableData"
@@ -53,20 +60,14 @@
 </template>
 
 <script setup lang="ts">
-import DataTable from '@/components/DataTable.vue'
+import DataTable, { IHeaderTableData, IBodyTableData } from '@/components/DataTable.vue'
 import ThePaginator from '@/components/ThePaginator.vue'
 import TheButton from '@/components/TheButton.vue'
-// import InputSearch from '@/components/InputSearch.vue'
+import InputSearch, { ISearchInputResult } from '@/components/InputSearch.vue'
 import { IPeople, IPeopleAll } from '@/api'
 import { ref, computed, shallowRef } from 'vue'
 import { useStore } from 'vuex'
 import { StarIcon, XMarkIcon, PlusIcon } from '@heroicons/vue/24/outline'
-
-interface IBodyTableData {
-  data: IPeople,
-  checked: boolean,
-  disabled?: boolean
-}
 
 const $store = useStore()
 
@@ -77,12 +78,11 @@ let peoplesAll = ref<IPeopleAll | null>(null)
 let page = ref<number>(1)
 let perView = ref<number>(1)
 let peoplesResults = shallowRef<IPeople[] | null>([])
+let searchLoading = ref<boolean>(false)
+let searchString = ref<string>('')
+let searchResults = ref<ISearchInputResult[]>([])
 
-const headerTableData = ref<Array<{
-  title?: string,
-  alias: string,
-  hidden?: boolean
-}>>([
+const headerTableData = ref<IHeaderTableData[]>([
   {
     alias: 'id',
     hidden: true
@@ -235,8 +235,6 @@ const onRemoveFromFavorite = (character: IPeople): void => {
 
 const changePeopleState = (): void => {
   const favs = favorite.value.map((item: IPeople): number[] => {
-    console.log('item:', item)
-    console.log('item.id:', item.id)
     return item.id
   })
   
@@ -261,6 +259,26 @@ const changePeopleState = (): void => {
       }
     ]
   }, [])
+}
+
+// Search
+
+const onSearch = (): void => {
+  searchLoading.value = true
+
+  $store
+    .dispatch('searchPeople', searchString.value)
+    .then((result: IPeopleAll): void => {
+      searchLoading.value = false
+      
+      searchResults.value = result.results.map((character: IPeople): ISearchInputResult => {
+        const splitUrl = character.url.split('/')
+        return {
+          title: character.name,
+          value: +splitUrl[splitUrl.length - 2]
+        }
+      })
+    })
 }
 
 // Created ---------------------------------------------------------------------

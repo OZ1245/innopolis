@@ -70,6 +70,8 @@ interface IBodyTableData {
 
 const $store = useStore()
 
+// Vars ------------------------------------------------------------------------
+
 let loading = ref<boolean>(true)
 let peoplesAll = ref<IPeopleAll | null>(null)
 let page = ref<number>(1)
@@ -105,6 +107,8 @@ const headerTableData = ref<Array<{
 
 const bodyTableData = ref<IBodyTableData[]>([])
 
+// Computed --------------------------------------------------------------------
+
 const pages = computed((): number => {
   return Math.ceil(+peoplesAll.value?.count / perView.value) || 1
 })
@@ -118,6 +122,8 @@ const showFooter = computed((): boolean => {
     return character.checked && !character.disabled
   }) || false
 })
+
+// Methods ---------------------------------------------------------------------
 
 const onFetchData = (p: number): void => {
   loading.value = true
@@ -256,6 +262,8 @@ const changePeopleState = (): void => {
     ]
   }, [])
 }
+
+// Created ---------------------------------------------------------------------
 
 onFetchData(1)
 </script>

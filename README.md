@@ -1,5 +1,7 @@
 # Flame Тестовое фронт
 
+GHPages: [https://oz1245.github.io/innopolis/](https://oz1245.github.io/innopolis/)
+
 ## Содержание:
 - [Техническое задание](/doc/task.md)
 - Архитектура:

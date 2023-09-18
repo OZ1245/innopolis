@@ -87,7 +87,7 @@ export interface IHeaderTableData {
 
 export interface IBodyTableData {
   data: IPeople,
-  checked: boolean,
+  checked?: boolean,
   disabled?: boolean
 }
 
@@ -96,13 +96,13 @@ interface IReturnData {
 }
 
 const props = withDefaults(defineProps<{
-  header: IHeaderTableData[],
+  header?: IHeaderTableData[],
   body: Array<{
     [key: string]: any,
   }>,
-  showCheckboxColumn: boolean,
-  showButtonsColumn: boolean,
-  showFooter: boolean,
+  showCheckboxColumn?: boolean,
+  showButtonsColumn?: boolean,
+  showFooter?: boolean,
 }>(), {
   header: () => [],
   body: () => [],
@@ -167,10 +167,13 @@ const onSelectRow = (e: any, data: IReturnData): void => {
   &:first-child {
     border-left: 1px solid var(--border-color);
   }
+  
+  &:not(:last-child) {
+    border-left: 1px solid var(--border-color);
+  }
 }
 .data-table__td--buttons {
-  display: grid;
-  justify-content: center;
+  text-align: center;
 }
 
 .data-table__footer {

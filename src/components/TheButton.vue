@@ -49,7 +49,7 @@ const classList = computed(() => {
 
 <style lang="scss">
 .button {
-  display: flex;
+  display: inline-flex;
   justify-content: center;
   align-items: center;
   gap: calc(var(--padding-inline) / 4);

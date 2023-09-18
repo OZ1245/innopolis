@@ -9,12 +9,12 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/peoples/',
     name: 'Peoples',
-    component: () => import('@/views/PeoplesView.vue')
+    component: () => import('@/views/PeopleView.vue')
   },
   {
     path: '/peoples/:id',
     name: 'People',
-    component: () => import('@/views/PeopleView.vue')
+    component: () => import('@/views/CharacterView.vue')
   },
   {
     path: '/favorite/',

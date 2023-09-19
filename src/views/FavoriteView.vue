@@ -6,6 +6,7 @@
     </nav>
 
     <DataTable 
+      v-if="bodyTableData.length"
       :header="headerTableData"
       :body="bodyTableData"
       :show-buttons-column="true"
@@ -21,17 +22,26 @@
         </TheButton>
       </template>
     </DataTable>
+
+    <TheNotification 
+      v-else 
+      danger
+      class="favorite-view__notification"
+    >
+      No favorite, yet...
+    </TheNotification>
   </div>
 </template>
 
 <script lang="ts" setup>
+import { computed, ref } from 'vue'
 import { useStore } from 'vuex'
 import { IPeople } from '@/api'
 
 import DataTable, { IHeaderTableData, IBodyTableData } from '@/components/DataTable.vue'
 import TheButton from '@/components/TheButton.vue'
 import { XMarkIcon } from '@heroicons/vue/24/outline'
-import { computed, ref } from 'vue'
+import TheNotification from '@/components/TheNotification.vue'
 
 const $store = useStore()
 
@@ -88,7 +98,11 @@ const onRemoveFromFavorite = (character: IPeople): void => {
 }
 
 .favorite-view__icon {
-  width: var(--icon-size-m);
-  height: var(--icon-size-m);
+  width: var(--icon-size-s);
+  height: var(--icon-size-s);
+}
+
+.favorite-view__notification {
+  max-width: 800px;
 }
 </style>

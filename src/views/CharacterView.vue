@@ -146,7 +146,7 @@ $store
 }
 
 .character-view__icon {
-  width: var(--icon-size-m);
-  height: var(--icon-size-m);
+  width: var(--icon-size-s);
+  height: var(--icon-size-s);
 }
 </style>

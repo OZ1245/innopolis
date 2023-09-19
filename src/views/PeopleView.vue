@@ -309,7 +309,7 @@ onFetchData(1)
 }
 
 .people-view__star {
-  width: var(--icon-size-m);
-  height: var(--icon-size-m);
+  width: var(--icon-size-s);
+  height: var(--icon-size-s);
 }
 </style>

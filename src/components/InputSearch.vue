@@ -73,7 +73,8 @@ const onSearch = (event: any): void => {
 .input-search {
   position: relative;
 
-  width: 400px;
+  width: 100%;
+  max-width: 400px;
 }
 
 .input-search__field {

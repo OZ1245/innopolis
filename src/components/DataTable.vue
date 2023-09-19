@@ -135,6 +135,7 @@ const onSelectRow = (e: any, data: IReturnData): void => {
 }
 .data-table__table {
   width: 100%;
+  max-width: 800px;
   border-collapse: collapse;
   border-spacing: 0;
 }

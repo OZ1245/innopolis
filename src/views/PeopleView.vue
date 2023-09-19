@@ -305,7 +305,7 @@ onFetchData(1)
 
 .people-view__table {
   width: 100%;
-  max-width: 800px;
+  align-items: center;
 }
 
 .people-view__star {

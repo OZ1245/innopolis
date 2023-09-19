@@ -5,7 +5,8 @@
   >
     <nav>
       <router-link :to="{ name: 'Home' }">Home</router-link> |
-      <router-link :to="{ name: 'Peoples' }">Peoples</router-link>
+      <router-link :to="{ name: 'Peoples' }">Peoples</router-link> |
+      <router-link :to="{ name: 'Favorite' }">Favorite</router-link>
     </nav>
 
     <DataTable 
@@ -141,7 +142,7 @@ $store
 
 .character-view__table {
   width: 100%;
-  max-width: 800px;
+  align-items: center;
 }
 
 .character-view__icon {
